@@ -14,5 +14,5 @@ public interface EItem {
 
     public String getName();
 
-    public Float getPrice();
+    public Double getPrice();
 }
