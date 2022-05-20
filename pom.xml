@@ -90,6 +90,61 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.8.8</version>
+        <configuration>
+          <rules>
+            <rule>
+              <element>METHOD</element>
+              <excludes>
+                <exclude>*Test</exclude>
+              </excludes>
+              <limits>
+                <limit>
+                  <counter>INSTRUCTION</counter>
+                  <value>COVEREDRATIO</value>
+                  <minimum>0.85</minimum>
+                </limit>
+              </limits>
+            </rule>
+          </rules>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>generate-code-coverage-report</id>
+            <phase>test</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>check-code-coverage</id>
+            <phase>package</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.eluder.coveralls</groupId>
+        <artifactId>coveralls-maven-plugin</artifactId>
+        <version>4.3.0</version>
+        <dependencies>
+          <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.3.1</version>
+          </dependency>
+        </dependencies>
+      </plugin>
     </plugins>
   </build>
 </project>
