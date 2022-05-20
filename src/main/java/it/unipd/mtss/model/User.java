@@ -1,0 +1,14 @@
+////////////////////////////////////////////////////////////////////
+// Luca Calabrese 1226305
+// Elia Scandaletti 1216751
+////////////////////////////////////////////////////////////////////
+
+package it.unipd.mtss.model;
+
+import java.util.Date;
+
+public interface User {
+    String getEmail();
+
+    Date getBirthday();
+}
