@@ -5,7 +5,9 @@
 
 package it.unipd.mtss.business;
 
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 
 import it.unipd.mtss.business.exception.BillException;
 import it.unipd.mtss.model.EItem;
@@ -18,61 +20,72 @@ public class BillImpl implements Bill {
             throws BillException {
         Double price = 0.0;
 
-        int procCount = 0;
-        EItem cheapestProc = null;
+        Map<EItem.itemType, Integer> counters = new EnumMap<>(
+                EItem.itemType.class);
+        Map<EItem.itemType, EItem> cheapestItems = new EnumMap<>(
+                EItem.itemType.class);
 
-        int mouseCount = 0;
-        EItem cheapestMouse = null;
-
-        int keyboardCount = 0;
-        EItem cheapestKB = null;
+        for (EItem.itemType type : EItem.itemType.values()) {
+            counters.put(type, 0);
+            cheapestItems.put(type, null);
+        }
 
         for (EItem eItem : itemsOrdered) {
             price += eItem.getPrice();
-            if (eItem.getType() == EItem.itemType.Processor) {
-                procCount += 1;
-                if (cheapestProc == null ||
-                        cheapestProc.getPrice() > eItem.getPrice()) {
-                    cheapestProc = eItem;
-                }
-            }
 
-            if (eItem.getType() == EItem.itemType.Mouse) {
-                mouseCount += 1;
-                if (cheapestMouse == null ||
-                        cheapestMouse.getPrice() > eItem.getPrice()) {
-                    cheapestMouse = eItem;
-                }
-            }
-
-            if (eItem.getType() == EItem.itemType.KeyBoard) {
-                keyboardCount += 1;
-                if (cheapestKB == null ||
-                        cheapestKB.getPrice() > eItem.getPrice()) {
-                    cheapestKB = eItem;
-                }
+            int count = counters.get(eItem.getType());
+            counters.replace(eItem.getType(), count + 1);
+            EItem cheapestItem = cheapestItems.get(eItem.getType());
+            if (cheapestItem == null ||
+                    eItem.getPrice() < cheapestItem.getPrice()) {
+                cheapestItems.put(eItem.getType(), eItem);
             }
         }
 
+        int procCount = counters.get(EItem.itemType.Processor);
+        int mouseCount = counters.get(EItem.itemType.Mouse);
+        int keyboardCount = counters.get(EItem.itemType.KeyBoard);
+        EItem cheapestProc = cheapestItems.get(EItem.itemType.Processor);
+        EItem cheapestMouse = cheapestItems.get(EItem.itemType.Mouse);
+        EItem cheapestKB = cheapestItems.get(EItem.itemType.KeyBoard);
+
+        price -= getProcessorDiscount(cheapestProc, procCount);
+
+        price -= getMouseDiscount(cheapestMouse, mouseCount);
+
+        price -= getSameNumberMouseKeyboardDiscount(
+                cheapestMouse, mouseCount, cheapestKB, keyboardCount);
+
+        return price;
+    }
+
+    private double getProcessorDiscount(EItem cheapestProc, int procCount) {
         if (procCount > 5) {
-            price -= cheapestProc.getPrice() / 2;
+            return cheapestProc.getPrice() / 2;
         }
+        return 0;
+    }
 
+    private double getMouseDiscount(EItem cheapestMouse, int mouseCount) {
         if (mouseCount > 10) {
-            price -= cheapestMouse.getPrice();
+            return cheapestMouse.getPrice();
         }
+        return 0;
+    }
 
+    private double getSameNumberMouseKeyboardDiscount(
+            EItem cheapestMouse, int mouseCount,
+            EItem cheapestKB, int keyboardCount) {
         if (mouseCount == keyboardCount && mouseCount > 0) {
             if (cheapestMouse.getPrice() < cheapestKB.getPrice()) {
                 if (mouseCount <= 10) {
-                    price -= cheapestMouse.getPrice();
+                    return cheapestMouse.getPrice();
                 }
             } else {
-                price -= cheapestKB.getPrice();
+                return cheapestKB.getPrice();
             }
         }
-
-        return price;
+        return 0;
     }
 
 }
