@@ -230,7 +230,7 @@ public class BillImplTest {
 
         double price = new BillImpl().getOrderPrice(itemsList, user);
 
-        assertEquals(1634.69, price, 0.01);
+        assertEquals(1471.22, price, 0.01);
     }
 
     @Test
@@ -264,6 +264,18 @@ public class BillImplTest {
 
         double price = new BillImpl().getOrderPrice(itemsList, user);
 
-        assertEquals(1598.59, price, 0.01);
+        assertEquals(1438.73, price, 0.01);
+    }
+
+    @Test
+    public void getOrderPrice_BillAbove1000_DiscountApplied() throws BillException {
+        List<EItem> itemsList = new ArrayList<EItem>();
+        itemsList.add(new Processor("jerry", 18.9));
+        itemsList.add(new MotherBoard("tom", 50.9));
+        itemsList.add(new Processor("spike", 900.2));
+        itemsList.add(new KeyBoard("nibbles", 90.0));
+        User user = new UserImpl("cicirello@mad.it", new Date(17186400000L));
+        double price = new BillImpl().getOrderPrice(itemsList, user);
+        assertEquals(954.0, price, 0.001);
     }
 }
