@@ -21,6 +21,9 @@ public class BillImpl implements Bill {
 
         int procCount = 0;
         EItem cheapestProc = null;
+        
+        int mouseCount = 0;
+        EItem cheapestMouse = null;
 
         for (EItem eItem : itemsOrdered) {
             price += eItem.getPrice();
@@ -31,10 +34,22 @@ public class BillImpl implements Bill {
                     cheapestProc = eItem;
                 }
             }
+
+            if (eItem.getType() == EItem.itemType.Mouse) {
+                mouseCount += 1;
+                if (cheapestMouse == null ||
+                        cheapestMouse.getPrice() > eItem.getPrice()) {
+                    cheapestMouse = eItem;
+                }
+            }
         }
 
         if (procCount > 5) {
             price -= cheapestProc.getPrice() / 2;
+        }
+
+        if (mouseCount > 10) {
+            price -= cheapestMouse.getPrice();
         }
 
         return price;
