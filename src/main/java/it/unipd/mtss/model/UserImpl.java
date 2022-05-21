@@ -5,13 +5,13 @@
 
 package it.unipd.mtss.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class UserImpl implements User {
     String email;
-    Date birthday;
+    LocalDate birthday;
 
-    public UserImpl(String email, Date birthday) {
+    public UserImpl(String email, LocalDate birthday) {
         super();
         this.email = email;
         this.birthday = birthday;
@@ -23,7 +23,7 @@ public class UserImpl implements User {
     }
 
     @Override
-    public Date getBirthday() {
+    public LocalDate getBirthday() {
         return this.birthday;
     }
 }
