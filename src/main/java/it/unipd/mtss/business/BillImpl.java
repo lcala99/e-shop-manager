@@ -63,6 +63,8 @@ public class BillImpl implements Bill {
 
         if (price > 1000) {
             price *= 0.9;
+        } else if (price < 10) {
+            price += 2;
         }
 
         return price;
