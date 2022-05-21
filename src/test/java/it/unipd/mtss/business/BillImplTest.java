@@ -24,7 +24,7 @@ public class BillImplTest {
         List<EItem> emptyList = new ArrayList<EItem>();
         User user = new UserImpl("cicirello@mad.it", new Date(17186400000L));
         double price = new BillImpl().getOrderPrice(emptyList, user);
-        assertEquals(0.0, price, 0.0);
+        assertEquals(2.0, price, 0.0);
     }
 
     @Test
@@ -356,5 +356,14 @@ public class BillImplTest {
         double price = new BillImpl().getOrderPrice(itemsList, user);
 
         assertEquals(1926.081, price, 0.01);
+    }
+
+    @Test
+    public void getOrderPrice_Less10Euros_CommissionApplied() throws BillException {
+        List<EItem> oneItemList = new ArrayList<EItem>();
+        oneItemList.add(new Mouse("jerry", 8.9));
+        User user = new UserImpl("cicirello@mad.it", new Date(17186400000L));
+        double price = new BillImpl().getOrderPrice(oneItemList, user);
+        assertEquals(10.9, price, 0.0);
     }
 }
