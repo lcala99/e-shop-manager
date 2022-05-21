@@ -56,7 +56,7 @@ public class BillImplTest {
         itemsList.add(new KeyBoard("nibbles", 90.0));
         User user = new UserImpl("cicirello@mad.it", new Date(17186400000L));
         double price = new BillImpl().getOrderPrice(itemsList, user);
-        assertEquals(250.7, price, 0.0);
+        assertEquals(231.8, price, 0.001);
     }
 
     @Test
@@ -86,7 +86,7 @@ public class BillImplTest {
 
         double price = new BillImpl().getOrderPrice(itemsList, user);
 
-        assertEquals(121.3, price, 0.001);
+        assertEquals(105.4, price, 0.001);
     }
 
     @Test

@@ -5,7 +5,6 @@
 
 package it.unipd.mtss.business;
 
-import java.util.Iterator;
 import java.util.List;
 
 import it.unipd.mtss.business.exception.BillException;
@@ -21,9 +20,12 @@ public class BillImpl implements Bill {
 
         int procCount = 0;
         EItem cheapestProc = null;
-        
+
         int mouseCount = 0;
         EItem cheapestMouse = null;
+
+        int keyboardCount = 0;
+        EItem cheapestKB = null;
 
         for (EItem eItem : itemsOrdered) {
             price += eItem.getPrice();
@@ -42,6 +44,14 @@ public class BillImpl implements Bill {
                     cheapestMouse = eItem;
                 }
             }
+
+            if (eItem.getType() == EItem.itemType.KeyBoard) {
+                keyboardCount += 1;
+                if (cheapestKB == null ||
+                        cheapestKB.getPrice() > eItem.getPrice()) {
+                    cheapestKB = eItem;
+                }
+            }
         }
 
         if (procCount > 5) {
@@ -50,6 +60,16 @@ public class BillImpl implements Bill {
 
         if (mouseCount > 10) {
             price -= cheapestMouse.getPrice();
+        }
+
+        if (mouseCount == keyboardCount && mouseCount > 0) {
+            if (cheapestMouse.getPrice() < cheapestKB.getPrice()) {
+                if (mouseCount <= 10) {
+                    price -= cheapestMouse.getPrice();
+                }
+            } else {
+                price -= cheapestKB.getPrice();
+            }
         }
 
         return price;
