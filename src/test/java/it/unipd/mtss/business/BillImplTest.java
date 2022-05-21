@@ -278,4 +278,83 @@ public class BillImplTest {
         double price = new BillImpl().getOrderPrice(itemsList, user);
         assertEquals(954.0, price, 0.001);
     }
+
+    @Test(expected = BillException.class)
+    public void getOrderPrice_MoreThan30Items_ExceptionThrown() throws BillException {
+        List<EItem> itemsList = new ArrayList<EItem>();
+        itemsList.add(new Mouse("a", 18.9));
+        itemsList.add(new Mouse("b", 50.9));
+        itemsList.add(new MotherBoard("c", 15.9));
+        itemsList.add(new Mouse("d", 35.6));
+        itemsList.add(new Processor("e", 31.1));
+        itemsList.add(new Mouse("f", 42.8));
+        itemsList.add(new Processor("g", 18.9));
+        itemsList.add(new Processor("h", 50.9));
+        itemsList.add(new KeyBoard("i", 16.0));
+        itemsList.add(new KeyBoard("j", 35.6));
+        itemsList.add(new MotherBoard("k", 31.1));
+        itemsList.add(new Mouse("l", 42.8));
+        itemsList.add(new KeyBoard("aa", 38.9));
+        itemsList.add(new KeyBoard("bb", 56.9));
+        itemsList.add(new Mouse("cc", 75.3));
+        itemsList.add(new KeyBoard("dd", 65.6));
+        itemsList.add(new MotherBoard("ee", 39.1));
+        itemsList.add(new Processor("ff", 52.8));
+        itemsList.add(new MotherBoard("gg", 98.9));
+        itemsList.add(new MotherBoard("hh", 500.09));
+        itemsList.add(new MotherBoard("ii", 160.0));
+        itemsList.add(new Mouse("jj", 95.6));
+        itemsList.add(new KeyBoard("kk", 36.1));
+        itemsList.add(new Processor("ll", 40.8));
+        itemsList.add(new MotherBoard("ii", 160.0));
+        itemsList.add(new KeyBoard("bb", 56.9));
+        itemsList.add(new Mouse("cc", 75.3));
+        itemsList.add(new KeyBoard("dd", 65.6));
+        itemsList.add(new Mouse("jj", 95.6));
+        itemsList.add(new KeyBoard("kk", 36.1));
+        itemsList.add(new Processor("ll", 40.8));
+        User user = new UserImpl("cicirello@mad.it", new Date(17186400000L));
+
+        new BillImpl().getOrderPrice(itemsList, user);
+    }
+
+    @Test()
+    public void getOrderPrice_Exactly30Items_Calculated() throws BillException {
+        List<EItem> itemsList = new ArrayList<EItem>();
+        itemsList.add(new MotherBoard("a", 18.9));
+        itemsList.add(new MotherBoard("b", 50.9));
+        itemsList.add(new MotherBoard("c", 15.9));
+        itemsList.add(new MotherBoard("d", 35.6));
+        itemsList.add(new MotherBoard("e", 31.1));
+        itemsList.add(new MotherBoard("f", 42.8));
+        itemsList.add(new MotherBoard("g", 18.9));
+        itemsList.add(new MotherBoard("h", 50.9));
+        itemsList.add(new MotherBoard("i", 16.0));
+        itemsList.add(new MotherBoard("j", 35.6));
+        itemsList.add(new MotherBoard("k", 31.1));
+        itemsList.add(new MotherBoard("l", 42.8));
+        itemsList.add(new MotherBoard("aa", 38.9));
+        itemsList.add(new MotherBoard("bb", 56.9));
+        itemsList.add(new MotherBoard("cc", 75.3));
+        itemsList.add(new MotherBoard("dd", 65.6));
+        itemsList.add(new MotherBoard("ee", 39.1));
+        itemsList.add(new MotherBoard("ff", 52.8));
+        itemsList.add(new MotherBoard("gg", 98.9));
+        itemsList.add(new MotherBoard("hh", 500.09));
+        itemsList.add(new MotherBoard("ii", 160.0));
+        itemsList.add(new MotherBoard("jj", 95.6));
+        itemsList.add(new MotherBoard("kk", 36.1));
+        itemsList.add(new MotherBoard("ll", 40.8));
+        itemsList.add(new MotherBoard("ii", 160.0));
+        itemsList.add(new MotherBoard("bb", 56.9));
+        itemsList.add(new MotherBoard("cc", 75.3));
+        itemsList.add(new MotherBoard("dd", 65.6));
+        itemsList.add(new MotherBoard("jj", 95.6));
+        itemsList.add(new MotherBoard("kk", 36.1));
+        User user = new UserImpl("cicirello@mad.it", new Date(17186400000L));
+
+        double price = new BillImpl().getOrderPrice(itemsList, user);
+
+        assertEquals(1926.081, price, 0.01);
+    }
 }

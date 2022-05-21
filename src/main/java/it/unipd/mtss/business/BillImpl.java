@@ -18,6 +18,11 @@ public class BillImpl implements Bill {
     @Override
     public double getOrderPrice(List<EItem> itemsOrdered, User user)
             throws BillException {
+
+        if (itemsOrdered.size() > 30) {
+            throw new BillException();
+        }
+
         Double price = 0.0;
 
         Map<EItem.itemType, Integer> counters = new EnumMap<>(
