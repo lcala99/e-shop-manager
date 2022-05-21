@@ -2,8 +2,8 @@ package it.unipd.mtss.business;
 
 import static org.junit.Assert.assertEquals;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
@@ -22,7 +22,7 @@ public class BillImplTest {
     @Test
     public void getOrderPrice_EmptyList_Calculated() throws BillException {
         List<EItem> emptyList = new ArrayList<EItem>();
-        User user = new UserImpl("cicirello@mad.it", new Date(17186400000L));
+        User user = new UserImpl("cicirello@mad.it", LocalDate.of(2000, 10, 18));
         double price = new BillImpl().getOrderPrice(emptyList, user);
         assertEquals(2.0, price, 0.0);
     }
@@ -31,7 +31,7 @@ public class BillImplTest {
     public void getOrderPrice_OneItem_Calculated() throws BillException {
         List<EItem> oneItemList = new ArrayList<EItem>();
         oneItemList.add(new Mouse("jerry", 18.9));
-        User user = new UserImpl("cicirello@mad.it", new Date(17186400000L));
+        User user = new UserImpl("cicirello@mad.it", LocalDate.of(2000, 10, 18));
         double price = new BillImpl().getOrderPrice(oneItemList, user);
         assertEquals(18.9, price, 0.0);
     }
@@ -42,7 +42,7 @@ public class BillImplTest {
         itemsList.add(new Mouse("jerry", 18.9));
         itemsList.add(new Mouse("tom", 50.9));
         itemsList.add(new Mouse("spike", 90.9));
-        User user = new UserImpl("cicirello@mad.it", new Date(17186400000L));
+        User user = new UserImpl("cicirello@mad.it", LocalDate.of(2000, 10, 18));
         double price = new BillImpl().getOrderPrice(itemsList, user);
         assertEquals(160.7, price, 0.0);
     }
@@ -54,7 +54,7 @@ public class BillImplTest {
         itemsList.add(new MotherBoard("tom", 50.9));
         itemsList.add(new Processor("spike", 90.9));
         itemsList.add(new KeyBoard("nibbles", 90.0));
-        User user = new UserImpl("cicirello@mad.it", new Date(17186400000L));
+        User user = new UserImpl("cicirello@mad.it", LocalDate.of(2000, 10, 18));
         double price = new BillImpl().getOrderPrice(itemsList, user);
         assertEquals(231.8, price, 0.001);
     }
@@ -68,7 +68,7 @@ public class BillImplTest {
         itemsList.add(new Processor("d", 35.6));
         itemsList.add(new Processor("e", 31.1));
         itemsList.add(new Processor("f", 42.8));
-        User user = new UserImpl("cicirello@mad.it", new Date(17186400000L));
+        User user = new UserImpl("cicirello@mad.it", LocalDate.of(2000, 10, 18));
 
         double price = new BillImpl().getOrderPrice(itemsList, user);
 
@@ -82,7 +82,7 @@ public class BillImplTest {
         itemsList.add(new Processor("b", 50.9));
         itemsList.add(new Mouse("c", 15.9));
         itemsList.add(new Processor("d", 35.6));
-        User user = new UserImpl("cicirello@mad.it", new Date(17186400000L));
+        User user = new UserImpl("cicirello@mad.it", LocalDate.of(2000, 10, 18));
 
         double price = new BillImpl().getOrderPrice(itemsList, user);
 
@@ -97,7 +97,7 @@ public class BillImplTest {
         itemsList.add(new Processor("c", 15.9));
         itemsList.add(new Processor("d", 35.6));
         itemsList.add(new Processor("e", 31.1));
-        User user = new UserImpl("cicirello@mad.it", new Date(17186400000L));
+        User user = new UserImpl("cicirello@mad.it", LocalDate.of(2000, 10, 18));
 
         double price = new BillImpl().getOrderPrice(itemsList, user);
 
@@ -119,7 +119,7 @@ public class BillImplTest {
         itemsList.add(new Mouse("j", 35.6));
         itemsList.add(new Mouse("k", 31.1));
         itemsList.add(new Mouse("l", 42.8));
-        User user = new UserImpl("cicirello@mad.it", new Date(17186400000L));
+        User user = new UserImpl("cicirello@mad.it", LocalDate.of(2000, 10, 18));
 
         double price = new BillImpl().getOrderPrice(itemsList, user);
 
@@ -136,7 +136,7 @@ public class BillImplTest {
         itemsList.add(new Mouse("e", 35.6));
         itemsList.add(new KeyBoard("f", 18.9));
         itemsList.add(new Mouse("g", 35.6));
-        User user = new UserImpl("cicirello@mad.it", new Date(17186400000L));
+        User user = new UserImpl("cicirello@mad.it", LocalDate.of(2000, 10, 18));
 
         double price = new BillImpl().getOrderPrice(itemsList, user);
 
@@ -156,7 +156,7 @@ public class BillImplTest {
         itemsList.add(new Mouse("h", 120.93));
         itemsList.add(new Mouse("i", 37.4));
         itemsList.add(new Mouse("j", 99.9));
-        User user = new UserImpl("cicirello@mad.it", new Date(17186400000L));
+        User user = new UserImpl("cicirello@mad.it", LocalDate.of(2000, 10, 18));
 
         double price = new BillImpl().getOrderPrice(itemsList, user);
 
@@ -174,7 +174,7 @@ public class BillImplTest {
         itemsList.add(new KeyBoard("f", 51.3));
         itemsList.add(new KeyBoard("g", 86.21));
         itemsList.add(new KeyBoard("h", 120.93));
-        User user = new UserImpl("cicirello@mad.it", new Date(17186400000L));
+        User user = new UserImpl("cicirello@mad.it", LocalDate.of(2000, 10, 18));
 
         double price = new BillImpl().getOrderPrice(itemsList, user);
 
@@ -192,7 +192,7 @@ public class BillImplTest {
         itemsList.add(new Mouse("f", 51.3));
         itemsList.add(new Mouse("g", 86.21));
         itemsList.add(new Mouse("h", 120.93));
-        User user = new UserImpl("cicirello@mad.it", new Date(17186400000L));
+        User user = new UserImpl("cicirello@mad.it", LocalDate.of(2000, 10, 18));
 
         double price = new BillImpl().getOrderPrice(itemsList, user);
 
@@ -226,7 +226,7 @@ public class BillImplTest {
         itemsList.add(new KeyBoard("jj", 95.6));
         itemsList.add(new KeyBoard("kk", 36.1));
         itemsList.add(new KeyBoard("ll", 40.8));
-        User user = new UserImpl("cicirello@mad.it", new Date(17186400000L));
+        User user = new UserImpl("cicirello@mad.it", LocalDate.of(2000, 10, 18));
 
         double price = new BillImpl().getOrderPrice(itemsList, user);
 
@@ -260,7 +260,7 @@ public class BillImplTest {
         itemsList.add(new Mouse("jj", 95.6));
         itemsList.add(new Mouse("kk", 36.1));
         itemsList.add(new Mouse("ll", 40.8));
-        User user = new UserImpl("cicirello@mad.it", new Date(17186400000L));
+        User user = new UserImpl("cicirello@mad.it", LocalDate.of(2000, 10, 18));
 
         double price = new BillImpl().getOrderPrice(itemsList, user);
 
@@ -274,7 +274,7 @@ public class BillImplTest {
         itemsList.add(new MotherBoard("tom", 50.9));
         itemsList.add(new Processor("spike", 900.2));
         itemsList.add(new KeyBoard("nibbles", 90.0));
-        User user = new UserImpl("cicirello@mad.it", new Date(17186400000L));
+        User user = new UserImpl("cicirello@mad.it", LocalDate.of(2000, 10, 18));
         double price = new BillImpl().getOrderPrice(itemsList, user);
         assertEquals(954.0, price, 0.001);
     }
@@ -313,7 +313,7 @@ public class BillImplTest {
         itemsList.add(new Mouse("jj", 95.6));
         itemsList.add(new KeyBoard("kk", 36.1));
         itemsList.add(new Processor("ll", 40.8));
-        User user = new UserImpl("cicirello@mad.it", new Date(17186400000L));
+        User user = new UserImpl("cicirello@mad.it", LocalDate.of(2000, 10, 18));
 
         new BillImpl().getOrderPrice(itemsList, user);
     }
@@ -351,7 +351,7 @@ public class BillImplTest {
         itemsList.add(new MotherBoard("dd", 65.6));
         itemsList.add(new MotherBoard("jj", 95.6));
         itemsList.add(new MotherBoard("kk", 36.1));
-        User user = new UserImpl("cicirello@mad.it", new Date(17186400000L));
+        User user = new UserImpl("cicirello@mad.it", LocalDate.of(2000, 10, 18));
 
         double price = new BillImpl().getOrderPrice(itemsList, user);
 
@@ -362,7 +362,7 @@ public class BillImplTest {
     public void getOrderPrice_Less10Euros_CommissionApplied() throws BillException {
         List<EItem> oneItemList = new ArrayList<EItem>();
         oneItemList.add(new Mouse("jerry", 8.9));
-        User user = new UserImpl("cicirello@mad.it", new Date(17186400000L));
+        User user = new UserImpl("cicirello@mad.it", LocalDate.of(2000, 10, 18));
         double price = new BillImpl().getOrderPrice(oneItemList, user);
         assertEquals(10.9, price, 0.0);
     }

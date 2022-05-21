@@ -5,10 +5,10 @@
 
 package it.unipd.mtss.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public interface User {
     String getEmail();
 
-    Date getBirthday();
+    LocalDate getBirthday();
 }
