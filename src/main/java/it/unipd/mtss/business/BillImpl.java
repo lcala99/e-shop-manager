@@ -56,6 +56,10 @@ public class BillImpl implements Bill {
         price -= getSameNumberMouseKeyboardDiscount(
                 cheapestMouse, mouseCount, cheapestKB, keyboardCount);
 
+        if (price > 1000) {
+            price *= 0.9;
+        }
+
         return price;
     }
 
