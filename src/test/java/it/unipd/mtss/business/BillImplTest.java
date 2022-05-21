@@ -1,8 +1,11 @@
 package it.unipd.mtss.business;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -365,5 +368,109 @@ public class BillImplTest {
         User user = new UserImpl("cicirello@mad.it", LocalDate.of(2000, 10, 18));
         double price = new BillImpl().getOrderPrice(oneItemList, user);
         assertEquals(10.9, price, 0.0);
+    }
+
+    @Test
+    public void shouldGift_AboveAge_NotGiven() {
+        User user = new UserImpl("cicirello@mad.it", LocalDate.of(2000, 10, 18));
+
+        boolean given = new BillImpl().shouldGift(user, LocalDateTime.of(2021, 05, 21, 18, 31, 02));
+
+        assertFalse(given);
+    }
+
+    @Test
+    public void shouldGift_NoMoreThan10Gifts_Succeed() {
+        List<User> users = new ArrayList<>();
+        users.add(new UserImpl("cicirello@mad.it", LocalDate.of(2006, 10, 18)));
+        users.add(new UserImpl("cicirello@mad.it", LocalDate.of(2007, 10, 18)));
+        users.add(new UserImpl("cicirello@mad.it", LocalDate.of(2008, 10, 18)));
+        users.add(new UserImpl("cicirello@mad.it", LocalDate.of(2009, 10, 18)));
+        users.add(new UserImpl("cicirello@mad.it", LocalDate.of(2010, 10, 18)));
+        users.add(new UserImpl("cicirello@mad.it", LocalDate.of(2006, 03, 18)));
+        users.add(new UserImpl("cicirello@mad.it", LocalDate.of(2007, 03, 18)));
+        users.add(new UserImpl("cicirello@mad.it", LocalDate.of(2008, 03, 18)));
+        users.add(new UserImpl("cicirello@mad.it", LocalDate.of(2009, 03, 18)));
+        users.add(new UserImpl("cicirello@mad.it", LocalDate.of(2010, 03, 18)));
+        users.add(new UserImpl("cicirello@mad.it", LocalDate.of(2006, 05, 31)));
+        users.add(new UserImpl("cicirello@mad.it", LocalDate.of(2007, 05, 31)));
+        users.add(new UserImpl("cicirello@mad.it", LocalDate.of(2008, 05, 31)));
+        users.add(new UserImpl("cicirello@mad.it", LocalDate.of(2009, 05, 31)));
+        users.add(new UserImpl("cicirello@mad.it", LocalDate.of(2010, 05, 31)));
+        BillImpl bill = new BillImpl();
+        int gifted = 0;
+
+        for (User user : users) {
+            if (bill.shouldGift(user, LocalDateTime.of(2021, 05, 21, 18, 31, 02))) {
+                gifted += 1;
+            }
+        }
+
+        assertTrue(gifted <= 10);
+    }
+
+    @Test
+    public void shouldGift_NoMoreThanOneGiftPerUser_NotGiven() {
+        User user = new UserImpl("cicirello@mad.it", LocalDate.of(2006, 10, 18));
+        BillImpl bill = new BillImpl();
+        int gifted = 0;
+
+        for (int i = 0; i < 1000; i++) {
+            if (bill.shouldGift(user, LocalDateTime.of(2021, 05, 21, 18, 31, 02))) {
+                gifted += 1;
+            }
+        }
+
+        assertTrue(gifted <= 1);
+    }
+
+    @Test
+    public void shouldGift_AtLeastOneGiftGiven_GiftGiven() {
+        BillImpl bill = new BillImpl();
+        int gifted = 0;
+
+        for (long i = 0; i < 100000L && gifted < 10; i++) {
+            User user = new UserImpl("cicirello@mad.it", LocalDate.of(2006, 10, 18));
+            if (bill.shouldGift(user, LocalDateTime.of(2021, 05, 21, 18, 31, 02))) {
+                gifted += 1;
+            }
+        }
+
+        assertEquals("!!! WARNING: there's a small chance of false negative.", 10, gifted, 2);
+    }
+
+    @Test
+    public void shouldGift_GiftGivenOutsideTime_NotGiven() {
+        BillImpl bill = new BillImpl();
+        int gifted = 0;
+
+        for (int i = 0; i < 1000; i++) {
+            User user = new UserImpl("cicirello@mad.it", LocalDate.of(2006, 10, 18));
+            if (bill.shouldGift(user, LocalDateTime.of(2021, 05, 21, 06, 31, 02))) {
+                gifted += 1;
+            }
+        }
+
+        assertEquals(0, gifted);
+    }
+
+    @Test
+    public void shouldGift_GiftGivenInDifferentDays_Given() {
+        User user = new UserImpl("cicirello@mad.it", LocalDate.of(2006, 10, 18));
+        BillImpl bill = new BillImpl();
+        int gifted = 0;
+
+        for (long i = 0; i < 100000L && gifted < 1; i++) {
+            if (bill.shouldGift(user, LocalDateTime.of(2021, 05, 21, 18, 31, 02))) {
+                gifted += 1;
+            }
+        }
+        for (long i = 0; i < 100000L && gifted < 2; i++) {
+            if (bill.shouldGift(user, LocalDateTime.of(2021, 05, 22, 18, 31, 02))) {
+                gifted += 1;
+            }
+        }
+
+        assertEquals("!!! WARNING: there's a small chance of false negative.", 2, gifted, 1);
     }
 }
