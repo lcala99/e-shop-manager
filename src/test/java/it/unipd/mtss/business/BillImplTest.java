@@ -56,7 +56,7 @@ public class BillImplTest {
         itemsList.add(new KeyBoard("nibbles", 90.0));
         User user = new UserImpl("cicirello@mad.it", new Date(17186400000L));
         double price = new BillImpl().getOrderPrice(itemsList, user);
-        assertEquals(250.7, price, 0.0);
+        assertEquals(231.8, price, 0.001);
     }
 
     @Test
@@ -86,7 +86,7 @@ public class BillImplTest {
 
         double price = new BillImpl().getOrderPrice(itemsList, user);
 
-        assertEquals(121.3, price, 0.001);
+        assertEquals(105.4, price, 0.001);
     }
 
     @Test
@@ -161,5 +161,109 @@ public class BillImplTest {
         double price = new BillImpl().getOrderPrice(itemsList, user);
 
         assertEquals(548.14, price, 0.01);
+    }
+
+    @Test
+    public void getOrderPrice_SameNumberMiceKeyboard_DiscountAppliedOnMouse() throws BillException {
+        List<EItem> itemsList = new ArrayList<EItem>();
+        itemsList.add(new Mouse("a", 18.9));
+        itemsList.add(new Mouse("b", 50.9));
+        itemsList.add(new Mouse("c", 15.9));
+        itemsList.add(new Mouse("d", 35.6));
+        itemsList.add(new KeyBoard("e", 31.1));
+        itemsList.add(new KeyBoard("f", 51.3));
+        itemsList.add(new KeyBoard("g", 86.21));
+        itemsList.add(new KeyBoard("h", 120.93));
+        User user = new UserImpl("cicirello@mad.it", new Date(17186400000L));
+
+        double price = new BillImpl().getOrderPrice(itemsList, user);
+
+        assertEquals(394.94, price, 0.01);
+    }
+
+    @Test
+    public void getOrderPrice_SameNumberMiceKeyboard_DiscountAppliedOnKeyBoard() throws BillException {
+        List<EItem> itemsList = new ArrayList<EItem>();
+        itemsList.add(new KeyBoard("a", 18.9));
+        itemsList.add(new KeyBoard("b", 50.9));
+        itemsList.add(new KeyBoard("c", 15.9));
+        itemsList.add(new KeyBoard("d", 35.6));
+        itemsList.add(new Mouse("e", 31.1));
+        itemsList.add(new Mouse("f", 51.3));
+        itemsList.add(new Mouse("g", 86.21));
+        itemsList.add(new Mouse("h", 120.93));
+        User user = new UserImpl("cicirello@mad.it", new Date(17186400000L));
+
+        double price = new BillImpl().getOrderPrice(itemsList, user);
+
+        assertEquals(394.94, price, 0.01);
+    }
+
+    @Test
+    public void getOrderPrice_MoreThan10MiceAndKeyboard_DuplicateDiscountNotApplied() throws BillException {
+        List<EItem> itemsList = new ArrayList<EItem>();
+        itemsList.add(new Mouse("a", 18.9));
+        itemsList.add(new Mouse("b", 50.9));
+        itemsList.add(new Mouse("c", 15.9));
+        itemsList.add(new Mouse("d", 35.6));
+        itemsList.add(new Mouse("e", 31.1));
+        itemsList.add(new Mouse("f", 42.8));
+        itemsList.add(new Mouse("g", 18.9));
+        itemsList.add(new Mouse("h", 50.9));
+        itemsList.add(new Mouse("i", 16.0));
+        itemsList.add(new Mouse("j", 35.6));
+        itemsList.add(new Mouse("k", 31.1));
+        itemsList.add(new Mouse("l", 42.8));
+        itemsList.add(new KeyBoard("aa", 38.9));
+        itemsList.add(new KeyBoard("bb", 56.9));
+        itemsList.add(new KeyBoard("cc", 75.3));
+        itemsList.add(new KeyBoard("dd", 65.6));
+        itemsList.add(new KeyBoard("ee", 39.1));
+        itemsList.add(new KeyBoard("ff", 52.8));
+        itemsList.add(new KeyBoard("gg", 98.9));
+        itemsList.add(new KeyBoard("hh", 500.09));
+        itemsList.add(new KeyBoard("ii", 160.0));
+        itemsList.add(new KeyBoard("jj", 95.6));
+        itemsList.add(new KeyBoard("kk", 36.1));
+        itemsList.add(new KeyBoard("ll", 40.8));
+        User user = new UserImpl("cicirello@mad.it", new Date(17186400000L));
+
+        double price = new BillImpl().getOrderPrice(itemsList, user);
+
+        assertEquals(1634.69, price, 0.01);
+    }
+
+    @Test
+    public void getOrderPrice_MoreThan10MiceAndKeyboard_BothDiscountsApplied() throws BillException {
+        List<EItem> itemsList = new ArrayList<EItem>();
+        itemsList.add(new KeyBoard("a", 18.9));
+        itemsList.add(new KeyBoard("b", 50.9));
+        itemsList.add(new KeyBoard("c", 15.9));
+        itemsList.add(new KeyBoard("d", 35.6));
+        itemsList.add(new KeyBoard("e", 31.1));
+        itemsList.add(new KeyBoard("f", 42.8));
+        itemsList.add(new KeyBoard("g", 18.9));
+        itemsList.add(new KeyBoard("h", 50.9));
+        itemsList.add(new KeyBoard("i", 16.0));
+        itemsList.add(new KeyBoard("j", 35.6));
+        itemsList.add(new KeyBoard("k", 31.1));
+        itemsList.add(new KeyBoard("l", 42.8));
+        itemsList.add(new Mouse("aa", 38.9));
+        itemsList.add(new Mouse("bb", 56.9));
+        itemsList.add(new Mouse("cc", 75.3));
+        itemsList.add(new Mouse("dd", 65.6));
+        itemsList.add(new Mouse("ee", 39.1));
+        itemsList.add(new Mouse("ff", 52.8));
+        itemsList.add(new Mouse("gg", 98.9));
+        itemsList.add(new Mouse("hh", 500.09));
+        itemsList.add(new Mouse("ii", 160.0));
+        itemsList.add(new Mouse("jj", 95.6));
+        itemsList.add(new Mouse("kk", 36.1));
+        itemsList.add(new Mouse("ll", 40.8));
+        User user = new UserImpl("cicirello@mad.it", new Date(17186400000L));
+
+        double price = new BillImpl().getOrderPrice(itemsList, user);
+
+        assertEquals(1598.59, price, 0.01);
     }
 }
