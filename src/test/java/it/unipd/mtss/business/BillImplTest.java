@@ -103,4 +103,63 @@ public class BillImplTest {
 
         assertEquals(152.4, price, 0.01);
     }
+
+    @Test
+    public void getOrderPrice_MoreThan10Mice_DiscountApplied() throws BillException {
+        List<EItem> itemsList = new ArrayList<EItem>();
+        itemsList.add(new Mouse("a", 18.9));
+        itemsList.add(new Mouse("b", 50.9));
+        itemsList.add(new Mouse("c", 15.9));
+        itemsList.add(new Mouse("d", 35.6));
+        itemsList.add(new Mouse("e", 31.1));
+        itemsList.add(new Mouse("f", 42.8));
+        itemsList.add(new Mouse("g", 18.9));
+        itemsList.add(new Mouse("h", 50.9));
+        itemsList.add(new Mouse("i", 16.0));
+        itemsList.add(new Mouse("j", 35.6));
+        itemsList.add(new Mouse("k", 31.1));
+        itemsList.add(new Mouse("l", 42.8));
+        User user = new UserImpl("cicirello@mad.it", new Date(17186400000L));
+
+        double price = new BillImpl().getOrderPrice(itemsList, user);
+
+        assertEquals(374.6, price, 0.01);
+    }
+
+    @Test
+    public void getOrderPrice_LessThan10Mice_DiscountNotApplied() throws BillException {
+        List<EItem> itemsList = new ArrayList<EItem>();
+        itemsList.add(new Mouse("a", 35.6));
+        itemsList.add(new KeyBoard("b", 50.9));
+        itemsList.add(new Processor("c", 18.9));
+        itemsList.add(new Mouse("d", 15.9));
+        itemsList.add(new Mouse("e", 35.6));
+        itemsList.add(new KeyBoard("f", 18.9));
+        itemsList.add(new Mouse("g", 35.6));
+        User user = new UserImpl("cicirello@mad.it", new Date(17186400000L));
+
+        double price = new BillImpl().getOrderPrice(itemsList, user);
+
+        assertEquals(211.4, price, 0.001);
+    }
+
+    @Test
+    public void getOrderPrice_Exactly10Mice_DiscountNotApplied() throws BillException {
+        List<EItem> itemsList = new ArrayList<EItem>();
+        itemsList.add(new Mouse("a", 18.9));
+        itemsList.add(new Mouse("b", 50.9));
+        itemsList.add(new Mouse("c", 15.9));
+        itemsList.add(new Mouse("d", 35.6));
+        itemsList.add(new Mouse("e", 31.1));
+        itemsList.add(new Mouse("f", 51.3));
+        itemsList.add(new Mouse("g", 86.21));
+        itemsList.add(new Mouse("h", 120.93));
+        itemsList.add(new Mouse("i", 37.4));
+        itemsList.add(new Mouse("j", 99.9));
+        User user = new UserImpl("cicirello@mad.it", new Date(17186400000L));
+
+        double price = new BillImpl().getOrderPrice(itemsList, user);
+
+        assertEquals(548.14, price, 0.01);
+    }
 }
